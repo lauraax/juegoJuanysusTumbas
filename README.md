@@ -5,5 +5,6 @@
 - Santiago Mesa 20232020041
 - Julian Forero 20232020030
 - María Patiño 20232020053
-- Dikson Castillo 20232020115 
+- Dikson Castillo 20232020115
+- David Sánchez 20232020049
 
