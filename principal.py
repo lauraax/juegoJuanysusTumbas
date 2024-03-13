@@ -1,7 +1,7 @@
 import pygame 
 from pygame.locals import *
 import sys
-
+from personaje import *
 size = width, height = 900, 466
 
 screen = pygame.display.set_mode(size)
@@ -16,12 +16,15 @@ def main():
     
     background_image = pygame.image.load("imagenes/fondojuego.jpg")
     background_rect = background_image.get_rect()
-
+    pygame.display.set_caption( "Juan" )
+    juan = Juan()
     while 1:
+        juan.update(size)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
         screen.blit(background_image, background_rect) 
+        screen.blit(juan.image, juan.rect)   
         pygame.display.update()
         pygame.time.delay(10)
 
