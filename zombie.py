@@ -6,11 +6,11 @@ import util
 
 class Zombie(Sprite):
     def __init__(self):
-        self.imagenes = [util.cargar_imagen('imagenes/z0.jpg'),
-                                        util.cargar_imagen('imagenes/z1.jpg'),
-                                        util.cargar_imagen('imagenes/z2.jpg'),
-                                        util.cargar_imagen('imagenes/z3.jpg'),
-                                        util.cargar_imagen('imagenes/z4.jpg')]
+        self.imagenes = [util.cargar_imagen('imagenes/Zombie0.png'),
+                                        util.cargar_imagen('imagenes/Zombie1.png'),
+                                        util.cargar_imagen('imagenes/Zombie2.png'),
+                                        util.cargar_imagen('imagenes/Zombie3.png'),
+                                        util.cargar_imagen('imagenes/Zombie4.png')]
         self.cont = 0
         self.image = self.imagenes[self.cont]
         self.rect = self.image.get_rect()
