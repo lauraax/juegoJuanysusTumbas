@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 from pygame import *
 import util
-
+import random
 
 class Zombie(Sprite):
     def __init__(self,contenedor):
@@ -22,8 +22,8 @@ class Zombie(Sprite):
         self.image = self.imagenes[self.sentido]
         self.contenedor = contenedor
         self.rect = self.image.get_rect()
-        self.rect.x = contenedor[0]
-        self.rect.y = contenedor[1]
+        self.rect.x =random.randint(0, contenedor[0])
+        self.rect.y =random.randint(0, contenedor[1])
         self.vel = 2
         self.caminar = pygame.mixer.Sound('sonido/gruñido.mp3')
         self.caminar.set_volume(2)
