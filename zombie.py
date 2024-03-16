@@ -11,6 +11,21 @@ class Zombie(Sprite):
                                         util.cargar_imagen('imagenes/Zombie2.png'),
                                         util.cargar_imagen('imagenes/Zombie3.png'),
                                         util.cargar_imagen('imagenes/Zombie4.png')]
+        
+        self.cont = 0
+        self.sentido = 0
+        self.image = self.imagenes[self.sentido][self.cont]
+        self.contenedor = contenedor
+        self.rect = self.image.get_rect()
+        self.rect.move_ip(contenedor[0]/30, contenedor[1]/1.47)
+        self.vel = (2,3)
+        self.puntos = 0
+        self.vida = 100
+        self.bullets=[]
+        self.caminar = pygame.mixer.Sound('sonido/gruñir.mp3')
+        self.caminar.set_volume(0.1)
+        
+        
         self.cont = 0
         self.image = self.imagenes[self.cont]
         self.rect = self.image.get_rect()
@@ -20,14 +35,3 @@ class Zombie(Sprite):
         self.caminar = pygame.mixer.Sound('sonido/caminar.mp3')
         self.caminar.set_volume(0.1)
         
-    def update(self,size):
-
-        self.caminar.play()
-        self.rect.x = (self.rect.x - self.vel[0]) % size[0]
-        self.cont = (self.cont + 1) % 4
-        self.image = self.imagenes[self.cont]
-    
-        self.caminar.play()
-        self.cont = (self.cont + 1) % 4
-        self.image = self.imagenes[self.cont]
-        self.rect.x = (self.rect.x + self.vel[0]) % size[0]

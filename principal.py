@@ -12,7 +12,7 @@ def main():
     
     pygame.init()
     pygame.mixer.init()
-    pygame.mixer.music.load("sonido/musicaFondo.mp3")
+    pygame.mixer.music.load("sonido/maicol.mp3")
     pygame.mixer.music.play(1)
     pygame.mixer.music.set_volume(0.09)
     
