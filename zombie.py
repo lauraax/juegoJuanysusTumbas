@@ -8,14 +8,14 @@ class Zombie(Sprite):
     def __init__(self,contenedor):
         
         super().__init__()
-        self.imagenes = [util.cargar_imagen('imagenes/Zombie0.png'),
-                                        util.cargar_imagen('imagenes/Zombie1.png'),
-                                        util.cargar_imagen('imagenes/Zombie2.png'),
-                                        util.cargar_imagen('imagenes/Zombie3.png'),
-                                        util.cargar_imagen('imagenes/Zombie4.png'),
-                                        util.cargar_imagen('imagenes/Zombie5.png'),
-                                        util.cargar_imagen('imagenes/Zombie6.png'),
-                                        util.cargar_imagen('imagenes/Zombie7.png')]
+        self.imagenes = [util.cargar_imagen('imagenes/Z0.png'),
+                                        util.cargar_imagen('imagenes/Z1.png'),
+                                        util.cargar_imagen('imagenes/Z2.png'),
+                                        util.cargar_imagen('imagenes/Z3.png'),
+                                        util.cargar_imagen('imagenes/Z4.png'),
+                                        util.cargar_imagen('imagenes/Z5.png'),
+                                        util.cargar_imagen('imagenes/Z6.png'),
+                                        util.cargar_imagen('imagenes/Z7.png')]
         
         self.cont = 0
         self.sentido = 0
@@ -24,7 +24,7 @@ class Zombie(Sprite):
         self.rect = self.image.get_rect()
         self.rect.x =random.randint(0, contenedor[0])
         self.rect.y =random.randint(0, contenedor[1])
-        self.vel = 2
+        self.vel = 0.9
         self.caminar = pygame.mixer.Sound('sonido/gruñido.mp3')
         self.caminar.set_volume(2)
         
