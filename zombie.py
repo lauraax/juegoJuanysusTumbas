@@ -28,7 +28,7 @@ class Zombie(Sprite):
         self.caminar = pygame.mixer.Sound('sonido/gruñido.mp3')
         self.caminar.set_volume(2)
         
-        print("Coordenadas iniciales del zombie:", self.rect.x, self.rect.y)
+        print("mimiCoordenadas iniciales del zombie:", self.rect.x, self.rect.y)
     def update(self):
         self.rect.x -= self.vel
         self.cont += 1
