@@ -4,6 +4,8 @@ import sys
 from personaje import *
 from tumbas import *
 from random import randint
+from zombie import Zombie
+
 size = width, height = 900, 466
 
 screen = pygame.display.set_mode(size)
@@ -22,6 +24,7 @@ def main():
 
     juan = Juan(size)
     tumbas = []
+    zombies = []
     while 1:
         juan.update(size)
         for event in pygame.event.get():
@@ -38,6 +41,9 @@ def main():
 
         if random.randint(0,100) % 25 == 0 and len(tumbas) < 4:
             tumbas.append(Tumbas(size))
+            
+        if random.randint(0,100) % 25 == 0 and len(zombies) < 3:
+            zombies.append(Zombie(size))
         
         for tumba in tumbas:
             tumba.update() 
@@ -47,6 +53,10 @@ def main():
                 for tumba in tumbas:
                     screen.blit(tumba.image, tumba.rect)
                     tumbas.remove(tumba)
+        
+        for zombie in zombies:
+            zombie.update()
+            screen.blit(zombie.image, zombie.rect)
           
         for bullet in juan.bullets:
             bullet.update()
