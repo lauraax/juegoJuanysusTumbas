@@ -31,7 +31,7 @@ class Zombie(Sprite):
         self.gruñido.play()
         
                 
-        print("mimiCoordenadas iniciales del zombie:", self.rect.x, self.rect.y)
+        
     def update(self):
         self.rect.x -= self.vel
         if self.rect.right <= 0: # hace que los zombies vuelvan a aparecer y no desaparezcan de pantalla 
