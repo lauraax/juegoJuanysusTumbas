@@ -7,7 +7,7 @@ from random import randint
 from zombie import Zombie
 
 size = width, height = 900, 466
-
+BLACK = (0, 0, 0)
 screen = pygame.display.set_mode(size)
 
 def main():
@@ -38,6 +38,7 @@ def main():
         texto_vida = fuente.render("Vida: "+str(juan.vida),1,(250,250,250))  
         fuente_go = pygame.font.Font(None,100)
         texto_fin = fuente_go.render("FIN DEL JUEGO",1,(250,0,0))
+        texto_win = fuente_go.render("Ganaste",1,(0,0,0),(250,0,0))
 
         if random.randint(0,100) % 25 == 0 and len(tumbas) < 4:
             tumbas.append(Tumbas(size))
@@ -49,10 +50,8 @@ def main():
             tumba.update() 
             screen.blit(tumba.image, tumba.rect)
             if juan.rect.colliderect(tumba.rect):
-                juan.puntos += 5
-                for tumba in tumbas:
-                    screen.blit(tumba.image, tumba.rect)
-                    tumbas.remove(tumba)
+                juan.puntos += 1
+                tumbas.remove(tumba)
         
         for zombie in zombies:
             zombie.update()
@@ -64,10 +63,16 @@ def main():
                 juan.bullets.remove(bullet)
             screen.blit(bullet.image, bullet.rect)
 
-            
         if juan.vida > 0:
             screen.blit(texto_vida,(600,50))
             screen.blit(texto_puntos,(100,50))
+        else:
+            screen.blit(texto_fin,(300,60))
+
+        if juan.puntos > 50:
+            screen.fill(BLACK)
+            screen.blit(texto_win,(300,60))
+
 
         screen.blit(juan.image, juan.rect)   
         pygame.display.update()
