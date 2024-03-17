@@ -25,7 +25,9 @@ class Zombie(Sprite):
         self.rect.x = 800
         self.rect.x = random.randint(0, contenedor[0])
         self.rect.y = 320
-        self.vel = 0.9
+        self.vel = 1.5
+        self.velocidad_animacion= 8
+        self.animacion_contador= 0 
         self.gruñido = pygame.mixer.Sound('sonido/gruñido.mp3')
         self.gruñido.set_volume(0.1)
         self.gruñido.play()
@@ -33,11 +35,18 @@ class Zombie(Sprite):
                 
         
     def update(self):
+        
+        self.animacion_contador += 1
+        if self.animacion_contador >= self.velocidad_animacion:
+            self.animacion_contador = 0
+            self.cont +=1
+            if self.cont >= len(self.imagenes):
+                self.cont = 0
         self.rect.x -= self.vel
         if self.rect.right <= 0: # hace que los zombies vuelvan a aparecer y no desaparezcan de pantalla 
             self.rect.x = self.contenedor[0]
-        self.cont += 1
-        if self.cont >= len(self.imagenes):
-            self.cont = 0
+        #self.cont += 1
+        #if self.cont >= len(self.imagenes):
+         #   self.cont = 0
         self.image = self.imagenes[self.cont]
     
