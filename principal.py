@@ -24,6 +24,7 @@ def main():
     juan = Juan(size)
     tumbas = []
     zombies = []
+    manos = []
     while 1:
         juan.update(size)
         for event in pygame.event.get():
@@ -41,9 +42,14 @@ def main():
 
         if random.randint(0,100) % 25 == 0 and len(tumbas) < 4:
             tumbas.append(Tumbas(size))
+            tumba = Tumbas(size)
+            manos.append(tumba.mano)
             
         if random.randint(0,100) % 25 == 0 and len(zombies) < 3:
             zombies.append(Zombie(size))
+
+        for mano in manos:
+            screen.blit(mano.image, mano.rect)
         
         for tumba in tumbas:
             tumba.update() 
