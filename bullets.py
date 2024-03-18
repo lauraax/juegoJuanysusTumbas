@@ -2,11 +2,11 @@ import pygame
 from pygame.sprite import Sprite
 
 class Bullet(Sprite):
-    def __init__(self, pos, vel):
+    def __init__(self, pos, vel, contenedor):
         super().__init__()
         self.vel = vel
-        self.image = pygame.Surface((10, 5))
-        self.image.fill((255, 255, 255))
+        self.image = pygame.image.load("imagenes/bullet.png")
+        
         self.rect = self.image.get_rect(center=pos)
         
     def update(self):

@@ -8,7 +8,7 @@ import util
 import random
 import os
 
-os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
+# os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
 size = width, height = 900, 466
 BLACK = (0, 0, 0)
 
@@ -40,7 +40,7 @@ def main():
 
     game_over = False
 
-    game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
+    #game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
 
     while True:
         clock.tick(60)
