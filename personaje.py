@@ -3,6 +3,16 @@ from pygame.sprite import Sprite
 from pygame import *
 import util
 from bullets import *
+
+sprites = pygame.sprite.Group()
+zombies = pygame.sprite.Group()
+balas = pygame.sprite.Group()
+
+sprites.update()
+zombies.update()
+balas.update()
+
+
 class Juan(Sprite):
     def __init__(self,contenedor):
         self.imagenes = [[util.cargar_imagen('imagenes/p0.png'),
@@ -48,11 +58,15 @@ class Juan(Sprite):
             
     def disparar(self):
         #self.disparo.play()
+        pos_y = self.rect.y + 40
         if self.sentido == 0:
-            pos = [self.rect.x + 64, self.rect.y+40]
-            vel = [10,0]
+            pos_x = self.rect.x + 64
+            vel_x = 10
         else:
-            pos = [self.rect.x, self.rect.y+40]
-            vel = [-10,0]
-        self.bullets.append(Bullet(pos, vel, self.contenedor)) 
-        
+            pos_x = self.rect.x
+            vel_x = -10
+        pos = [pos_x, pos_y]
+        vel = [vel_x, 0]
+        bala = Bullet(pos, vel, self.contenedor)
+        balas.add(bala)
+        self.bullets.append(bala)  

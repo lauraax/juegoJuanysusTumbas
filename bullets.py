@@ -20,4 +20,3 @@ class Bullet(Sprite):
         self.rect.y = self.rect.y % self.contenedor[1]
         
 
-	

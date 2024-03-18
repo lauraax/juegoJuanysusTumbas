@@ -11,7 +11,6 @@ BLACK = (0, 0, 0)
 screen = pygame.display.set_mode(size)
 
 def main():
-    
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load("sonido/maicol.mp3")
@@ -50,7 +49,7 @@ def main():
             tumba.update() 
             screen.blit(tumba.image, tumba.rect)
             if juan.rect.colliderect(tumba.rect):
-                juan.puntos += 1
+                juan.puntos += 2
                 tumbas.remove(tumba)
         
         for zombie in zombies:
@@ -72,11 +71,30 @@ def main():
         if juan.puntos > 50:
             screen.fill(BLACK)
             screen.blit(texto_win,(300,60))
+            
+        colisiones = pygame.sprite.spritecollide(juan, zombies, False)
+        for zombie in colisiones:
+            juan.vida -= 10
+            if juan.vida <= 0:
+                texto_fin
+            else: 
+                zombies.remove(zombie)
 
+        colision = pygame.sprite.groupcollide(zombies,balas, False, True)
+        for zombie, balas_golpeadas in colision.items():
+            #zombie.image = pygame.image.load("imagenes/Zmuerto0.png")
+            zombie.kill()
+            zombies.remove(zombie)
+
+            for bala in balas_golpeadas:
+                bala.kill()
+                if bala in juan.bullets:
+                    juan.bullets.remove(bala)
 
         screen.blit(juan.image, juan.rect)   
         pygame.display.update()
         pygame.time.delay(10)
 
+        
 if __name__ == '__main__':
     main()
