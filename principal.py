@@ -8,6 +8,9 @@ import util
 import random
 import os
 
+os.chdir("C:\Users\lenovo\Dropbox\Mi PC (LAPTOP-DL0G2Q4C)\Downloads\PARTE FIANL\juegoJuanysusTumbas\imagenes")
+background_image = pygame.image.load("menu.jpg")
+
 os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
 size = width, height = 900, 466
 BLACK = (0, 0, 0)
@@ -20,7 +23,7 @@ def show_game_over(screen, game_over_sound):
     pygame.display.flip() 
     game_over_sound.play() 
 
-def main():
+def main_game_loop():
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load("sonido/maicol.mp3")
@@ -118,5 +121,20 @@ def main():
         
         pygame.display.flip()
 
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((900, 466))
+    background_image = pygame.image.load("imagenes/menu.jpg")
+    background_rect = background_image.get_rect()
+    
+    while True:
+        screen.blit(background_image, background_rect)
+        pygame.display.flip()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.pos[0] >= 609 and event.pos[0] <= 609 and event.pos[1] >= 111 and event.pos[1] <= 111:
+                    main_game_loop()
+
 if __name__ == "__main__":
-    main()  
+    main()
