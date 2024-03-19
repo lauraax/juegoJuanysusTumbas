@@ -4,9 +4,11 @@ import sys
 from personaje import Juan
 from tumbas import Tumbas
 from zombie import Zombie
-import util
 import random
 import os
+
+os.chdir("C:\Users\lenovo\Dropbox\Mi PC (LAPTOP-DL0G2Q4C)\Downloads\PARTE FIANL\juegoJuanysusTumbas\imagenes")
+background_image = pygame.image.load("menu.jpg")
 
 os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
 size = width, height = 900, 466
@@ -20,7 +22,7 @@ def show_game_over(screen, game_over_sound):
     pygame.display.flip() 
     game_over_sound.play() 
 
-def main():
+def main_game_loop():
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load("sonido/maicol.mp3")
@@ -49,6 +51,12 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
+            # Si se detecta un evento de clic del mouse, inicia el juego
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if not game_over:
+                    continue
+                main_game_loop()
 
         if not game_over:  
             juan.update(size)
@@ -118,5 +126,26 @@ def main():
         
         pygame.display.flip()
 
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((900, 466))
+    background_image = pygame.image.load("imagenes/menu.jpg")
+    background_rect = background_image.get_rect()
+    
+    running = True
+    while running:
+        screen.blit(background_image, background_rect)
+        pygame.display.flip()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main_game_loop()
+            elif event.type == pygame.QUIT:
+                running = False
+                break
+
+    pygame.quit()
+    sys.exit()
+
 if __name__ == "__main__":
-    main()  
+    main()
