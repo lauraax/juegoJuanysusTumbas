@@ -4,16 +4,34 @@ import sys
 from personaje import Juan
 from tumbas import Tumbas
 from zombie import Zombie
-import util
 import random
-import os
 
-os.chdir("C:\Users\lenovo\Dropbox\Mi PC (LAPTOP-DL0G2Q4C)\Downloads\PARTE FIANL\juegoJuanysusTumbas\imagenes")
-background_image = pygame.image.load("menu.jpg")
 
-os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
+
+background_image = pygame.image.load("imagenes/menu1.png")
+
+
 size = width, height = 900, 466
 BLACK = (0, 0, 0)
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((900, 466))
+    background_image = pygame.image.load("imagenes/menu1.png")
+    background_rect = background_image.get_rect()
+    running = True
+    while running:
+        screen.blit(background_image, background_rect)
+        pygame.display.flip()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main_game_loop()
+            elif event.type == pygame.QUIT:
+                running = False
+                break
+ 
+    pygame.quit()
+    sys.exit()
 
 def show_game_over(screen, game_over_sound):
     font = pygame.font.Font(None, 100)
@@ -22,6 +40,14 @@ def show_game_over(screen, game_over_sound):
     screen.blit(game_over_text, text_rect)
     pygame.display.flip() 
     game_over_sound.play() 
+
+def show_win(screen):
+    font = pygame.font.Font(None, 100)
+    game_win_text = font.render("You Win", True, (255, 0, 0))
+    text_rect = game_win_text.get_rect(center=(width // 2, height // 2))
+    screen.blit(game_win_text, text_rect)
+    pygame.display.flip()  
+
 
 def main_game_loop():
     pygame.init()
@@ -41,9 +67,10 @@ def main_game_loop():
 
     clock = pygame.time.Clock()
 
-    game_over = False
-
+    game_over = True
+    game_win = True
     game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
+    
 
     while True:
         clock.tick(60)
@@ -52,8 +79,8 @@ def main_game_loop():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-
-        if not game_over:  
+        
+        if game_over and game_win :  
             juan.update(size)
 
             screen.blit(background_image, background_rect)
@@ -115,26 +142,17 @@ def main_game_loop():
             screen.blit(juan.image, juan.rect)
 
             if juan.vida <= 0:
-                game_over = True
+                game_over = False
+
+            if juan.puntos > 15:
+                screen.fill(BLACK)
+                show_win(screen)
         else:
-            show_game_over(screen, game_over_sound) 
-        
+            show_game_over(screen, game_over_sound)
+            
+         
         pygame.display.flip()
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((900, 466))
-    background_image = pygame.image.load("imagenes/menu.jpg")
-    background_rect = background_image.get_rect()
-    
-    while True:
-        screen.blit(background_image, background_rect)
-        pygame.display.flip()
-        
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.pos[0] >= 609 and event.pos[0] <= 609 and event.pos[1] >= 111 and event.pos[1] <= 111:
-                    main_game_loop()
 
 if __name__ == "__main__":
     main()
