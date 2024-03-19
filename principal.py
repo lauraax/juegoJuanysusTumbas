@@ -1,106 +1,140 @@
-import pygame, random 
+import pygame
 from pygame.locals import *
 import sys
-from personaje import *
-from tumbas import *
-from random import randint
+from personaje import Juan
+from tumbas import Tumbas
 from zombie import Zombie
+import util
+import random
+import os
 
+os.chdir("C:\Users\lenovo\Dropbox\Mi PC (LAPTOP-DL0G2Q4C)\Downloads\PARTE FIANL\juegoJuanysusTumbas\imagenes")
+background_image = pygame.image.load("menu.jpg")
+
+os.chdir('C:\\Users\\lenovo\\Dropbox\\Mi PC (LAPTOP-DL0G2Q4C)\\Downloads\\JUAN Y SUS TUMBAS\\juegoJuanysusTumbas')
 size = width, height = 900, 466
 BLACK = (0, 0, 0)
-screen = pygame.display.set_mode(size)
 
-def main():
+def show_game_over(screen, game_over_sound):
+    font = pygame.font.Font(None, 100)
+    game_over_text = font.render("Game Over", True, (255, 0, 0))
+    text_rect = game_over_text.get_rect(center=(width // 2, height // 2))
+    screen.blit(game_over_text, text_rect)
+    pygame.display.flip() 
+    game_over_sound.play() 
+
+def main_game_loop():
     pygame.init()
     pygame.mixer.init()
     pygame.mixer.music.load("sonido/maicol.mp3")
     pygame.mixer.music.play(1)
     pygame.mixer.music.set_volume(0.09)
     
+    screen = pygame.display.set_mode(size)
     background_image = pygame.image.load("imagenes/fondojuego.jpg")
     background_rect = background_image.get_rect()
-    pygame.display.set_caption( "Juego Juan Y Sus Tumbas" )
+    pygame.display.set_caption("Juego Juan Y Sus Tumbas")
 
     juan = Juan(size)
     tumbas = []
-    zombies = []
-    manos = []
-    while 1:
-        juan.update(size)
+    zombies = pygame.sprite.Group()
+
+    clock = pygame.time.Clock()
+
+    game_over = False
+
+    game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
+
+    while True:
+        clock.tick(60)
+        
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == QUIT:
+                pygame.quit()
                 sys.exit()
-        
-        pygame.font.init()
-        screen.blit(background_image, background_rect) 
-        fuente = pygame.font.Font(None,45)
-        texto_puntos = fuente.render("Puntos: "+str(juan.puntos),1,(250,250,250))
-        texto_vida = fuente.render("Vida: "+str(juan.vida),1,(250,250,250))  
-        fuente_go = pygame.font.Font(None,100)
-        texto_fin = fuente_go.render("FIN DEL JUEGO",1,(250,0,0))
-        texto_win = fuente_go.render("Ganaste",1,(0,0,0),(250,0,0))
 
-        if random.randint(0,100) % 25 == 0 and len(tumbas) < 4:
-            tumbas.append(Tumbas(size))
-            tumba = Tumbas(size)
-            manos.append(tumba.mano)
+        if not game_over:  
+            juan.update(size)
+
+            screen.blit(background_image, background_rect)
+
+            if random.randint(0, 100) % 25 == 0 and len(tumbas) < 4:
+                tumbas.append(Tumbas(size))
+
+
+            if random.randint(0, 100) % 25 == 0 and len(zombies) < 3:
+                zombies.add(Zombie(size))
+
+
+            for tumba in tumbas:
+                tumba.update() 
+                screen.blit(tumba.image, tumba.rect)
+                if juan.rect.colliderect(tumba.rect):
+                    juan.puntos += 1
+                    tumbas.remove(tumba)
             
-        if random.randint(0,100) % 25 == 0 and len(zombies) < 3:
-            zombies.append(Zombie(size))
 
-        for mano in manos:
-            screen.blit(mano.image, mano.rect)
-        
-        for tumba in tumbas:
-            tumba.update() 
-            screen.blit(tumba.image, tumba.rect)
-            if juan.rect.colliderect(tumba.rect):
-                juan.puntos += 2
-                tumbas.remove(tumba)
-        
-        for zombie in zombies:
-            zombie.update()
-            screen.blit(zombie.image, zombie.rect)
-          
-        for bullet in juan.bullets:
-            bullet.update()
-            if bullet.alcance == 0:
+            for zombie in zombies:
+                zombie.update()
+                screen.blit(zombie.image, zombie.rect)
+                for bullet in juan.bullets:
+                    if zombie.rect.colliderect(bullet.rect):
+                        juan.bullets.remove(bullet)
+                        zombies.remove(zombie)  
+
+
+            bullets_to_remove = []  
+            for bullet in juan.bullets:
+                bullet.update()
+                if bullet.rect.left > width:
+                    bullets_to_remove.append(bullet)  
+                else:
+                    screen.blit(bullet.image, bullet.rect)
+                
+
+                zombies_hit = pygame.sprite.spritecollide(bullet, zombies, True)  
+                if zombies_hit:
+                    bullets_to_remove.append(bullet) 
+
+
+            for bullet in bullets_to_remove:
                 juan.bullets.remove(bullet)
-            screen.blit(bullet.image, bullet.rect)
 
-        if juan.vida > 0:
-            screen.blit(texto_vida,(600,50))
-            screen.blit(texto_puntos,(100,50))
-        else:
-            screen.blit(texto_fin,(300,60))
+            for zombie in zombies:
+                if juan.rect.colliderect(zombie.rect):
+                    juan.vida -= 10
+                    zombies.remove(zombie)
 
-        if juan.puntos > 50:
-            screen.fill(BLACK)
-            screen.blit(texto_win,(300,60))
-            
-        colisiones = pygame.sprite.spritecollide(juan, zombies, False)
-        for zombie in colisiones:
-            juan.vida -= 10
+            font = pygame.font.Font(None, 45)
+            vida_text = font.render("Vida: " + str(juan.vida), 1, (255, 255, 255))
+            puntos_text = font.render("Puntos: " + str(juan.puntos), 1, (255, 255, 255))
+            screen.blit(vida_text, (20, 20))
+            screen.blit(puntos_text, (20, 60))
+
+
+            screen.blit(juan.image, juan.rect)
+
             if juan.vida <= 0:
-                texto_fin
-            else: 
-                zombies.remove(zombie)
-
-        colision = pygame.sprite.groupcollide(zombies,balas, False, True)
-        for zombie, balas_golpeadas in colision.items():
-            #zombie.image = pygame.image.load("imagenes/Zmuerto0.png")
-            zombie.kill()
-            zombies.remove(zombie)
-
-            for bala in balas_golpeadas:
-                bala.kill()
-                if bala in juan.bullets:
-                    juan.bullets.remove(bala)
-
-        screen.blit(juan.image, juan.rect)   
-        pygame.display.update()
-        pygame.time.delay(10)
-
+                game_over = True
+        else:
+            show_game_over(screen, game_over_sound) 
         
-if __name__ == '__main__':
+        pygame.display.flip()
+
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((900, 466))
+    background_image = pygame.image.load("imagenes/menu.jpg")
+    background_rect = background_image.get_rect()
+    
+    while True:
+        screen.blit(background_image, background_rect)
+        pygame.display.flip()
+        
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.pos[0] >= 609 and event.pos[0] <= 609 and event.pos[1] >= 111 and event.pos[1] <= 111:
+                    main_game_loop()
+
+if __name__ == "__main__":
     main()

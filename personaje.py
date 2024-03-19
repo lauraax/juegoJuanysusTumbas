@@ -3,16 +3,6 @@ from pygame.sprite import Sprite
 from pygame import *
 import util
 from bullets import *
-
-sprites = pygame.sprite.Group()
-zombies = pygame.sprite.Group()
-balas = pygame.sprite.Group()
-
-sprites.update()
-zombies.update()
-balas.update()
-
-
 class Juan(Sprite):
     def __init__(self,contenedor):
         self.imagenes = [[util.cargar_imagen('imagenes/p0.png'),
@@ -37,7 +27,7 @@ class Juan(Sprite):
         self.vida = 100
         self.bullets=[]
         self.caminar = pygame.mixer.Sound('sonido/caminar.mp3')
-        self.caminar.set_volume(0.1)
+        self.caminar.set_volume(0.05)
         
     def update(self,size):
         teclas = pygame.key.get_pressed()
@@ -58,15 +48,11 @@ class Juan(Sprite):
             
     def disparar(self):
         #self.disparo.play()
-        pos_y = self.rect.y + 40
         if self.sentido == 0:
-            pos_x = self.rect.x + 64
-            vel_x = 10
+            pos = [self.rect.x + 64, self.rect.y+40]
+            vel = [10,0]
         else:
-            pos_x = self.rect.x
-            vel_x = -10
-        pos = [pos_x, pos_y]
-        vel = [vel_x, 0]
-        bala = Bullet(pos, vel, self.contenedor)
-        balas.add(bala)
-        self.bullets.append(bala)  
+            pos = [self.rect.x, self.rect.y+40]
+            vel = [-10,0]
+        self.bullets.append(Bullet(pos, vel, self.contenedor)) 
+        
