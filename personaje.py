@@ -1,4 +1,4 @@
-import pygame, math
+import pygame
 from pygame.sprite import Sprite
 from pygame import *
 import util
