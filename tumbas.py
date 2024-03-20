@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.sprite import Sprite 
 from random import randint
-
+from mano import Mano
 class Tumbas(Sprite):
     def __init__(self,contenedor):
         self.contenedor = contenedor

@@ -3,7 +3,7 @@ from pygame.locals import *
 import sys
 from personaje import Juan
 from tumbas import Tumbas
-from zombie import Zombie
+from zombie import *
 import random
 
 
@@ -15,7 +15,7 @@ size = width, height = 900, 466
 BLACK = (0, 0, 0)
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((900, 466))
+    screen = pygame.display.set_mode((900, 500  ))
     background_image = pygame.image.load("imagenes/menu1.png")
     background_rect = background_image.get_rect()
     running = True
@@ -68,10 +68,7 @@ def main_game_loop():
     clock = pygame.time.Clock()
 
     game_over = True
-    game_win = True
-    game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
     
-
     while True:
         clock.tick(60)
         
@@ -80,7 +77,7 @@ def main_game_loop():
                 pygame.quit()
                 sys.exit()
         
-        if game_over and game_win :  
+        if game_over:  
             juan.update(size)
 
             screen.blit(background_image, background_rect)
@@ -89,7 +86,7 @@ def main_game_loop():
                 tumbas.append(Tumbas(size))
 
 
-            if random.randint(0, 100) % 25 == 0 and len(zombies) < 3:
+            if random.randint(0, 100) % 25 == 0 and len(zombies) < 3 :
                 zombies.add(Zombie(size))
 
 
@@ -105,9 +102,12 @@ def main_game_loop():
                 zombie.update()
                 screen.blit(zombie.image, zombie.rect)
                 for bullet in juan.bullets:
-                    if zombie.rect.colliderect(bullet.rect):
+                    if zombie.rect.colliderect(bullet.rect): 
                         juan.bullets.remove(bullet)
-                        zombies.remove(zombie)  
+                        if zombie in zombies: 
+                            zombie.morir()
+                            screen.blit(zombie.image, zombie.rect)
+                            zombies.remove(zombie)  
 
 
             bullets_to_remove = []  
@@ -144,13 +144,17 @@ def main_game_loop():
             if juan.vida <= 0:
                 game_over = False
 
-            if juan.puntos > 15:
-                screen.fill(BLACK)
-                show_win(screen)
+            if juan.puntos > 20:
+                game_over = False
+                
         else:
-            show_game_over(screen, game_over_sound)
-            
-         
+            if juan.vida <= 0:
+                game_over_sound = pygame.mixer.Sound('sonido/gameover.mp3')
+                game_over_sound.set_volume(0.04)
+                show_game_over(screen, game_over_sound)
+            else:
+                show_win (screen)
+             
         pygame.display.flip()
 
 
