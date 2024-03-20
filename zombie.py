@@ -1,8 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
 import util
-import random
-import os 
 
 class Zombie(Sprite):
     def __init__(self, contenedor):
@@ -19,8 +17,7 @@ class Zombie(Sprite):
             util.cargar_imagen('imagenes/Z7.png')
         ]
         self.cont = 0
-        self.sentido = 0
-        self.image = self.imagenes[self.sentido]
+        self.image = self.imagenes[self.cont]
         self.rect = self.image.get_rect()
         self.rect.x = 800
         self.rect.y = 320
@@ -52,5 +49,4 @@ def main():
     pygame.mixer.init()
 
 
-if __name__ == "__main__":
-    main()
+

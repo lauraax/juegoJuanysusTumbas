@@ -5,18 +5,18 @@ from personaje import Juan
 from tumbas import Tumbas
 from zombie import *
 import random
+from mano import *
 
 
-
-background_image = pygame.image.load("imagenes/menu1.png")
+background_image = pygame.image.load("imagenes/imagenInicio.jpeg")
 
 
 size = width, height = 900, 466
-BLACK = (0, 0, 0)
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((900, 500  ))
-    background_image = pygame.image.load("imagenes/menu1.png")
+    background_image = pygame.image.load("imagenes/imagenInicio.jpeg")
     background_rect = background_image.get_rect()
     running = True
     while running:
@@ -49,6 +49,7 @@ def show_win(screen):
     pygame.display.flip()  
 
 
+
 def main_game_loop():
     pygame.init()
     pygame.mixer.init()
@@ -64,7 +65,18 @@ def main_game_loop():
     juan = Juan(size)
     tumbas = []
     zombies = pygame.sprite.Group()
+    manos = pygame.sprite.Group()  
 
+    def pa_que_ponga_tumbas(screen):
+        tumbasfijas = [(100, 300), (400, 300), (700, 300)]  
+        tumba_image = pygame.image.load("imagenes/tumbaFija.png")  
+        for grave in tumbasfijas:
+            screen.blit(tumba_image, grave)  
+        if random.randint(0, 180) == 0: 
+            posMano = random.choice(tumbasfijas)  
+            mano = Mano(posMano)
+            manos.add(mano)
+    
     clock = pygame.time.Clock()
 
     game_over = True
@@ -84,11 +96,15 @@ def main_game_loop():
 
             if random.randint(0, 100) % 25 == 0 and len(tumbas) < 4:
                 tumbas.append(Tumbas(size))
-
-
+            
             if random.randint(0, 100) % 25 == 0 and len(zombies) < 3 :
                 zombies.add(Zombie(size))
-
+            pa_que_ponga_tumbas(screen)
+            manos.update()
+            manos.draw(screen)
+            hits = pygame.sprite.spritecollide(juan, manos, True)
+            for hit in hits:
+                juan.vida -= 10
 
             for tumba in tumbas:
                 tumba.update() 
@@ -108,7 +124,6 @@ def main_game_loop():
                             zombie.morir()
                             screen.blit(zombie.image, zombie.rect)
                             zombies.remove(zombie)  
-
 
             bullets_to_remove = []  
             for bullet in juan.bullets:
