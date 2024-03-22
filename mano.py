@@ -10,5 +10,6 @@ class Mano(Sprite):
 
     def update(self):
         self.timer += 1
-        if self.timer >= 180:  # 180 frames = 3 segundos a 60 fps
-            self.kill()
+        if self.timer >= 180:  #despues de 3 segundos la mano se quita
+            return True
+        return False

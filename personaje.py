@@ -28,13 +28,6 @@ class Juan(Sprite):
         self.bullets=[]
         self.caminar = pygame.mixer.Sound('sonido/caminar.mp3')
         self.caminar.set_volume(0.05)
-        self.invencible = False
-        self.invencible_duration = 2000 
-        self.invencible_timer = 0
-
-    def ser_alcanzado(self):
-        self.invencible = True
-        self.invencible_timer = pygame.time.get_ticks()
 
     def update(self,size):
         teclas = pygame.key.get_pressed()
@@ -51,19 +44,15 @@ class Juan(Sprite):
             self.image = self.imagenes[self.sentido][self.cont]
             self.rect.x = (self.rect.x + self.vel[0]) % size[0]
         if teclas[K_SPACE]:
-            self.disparar()
-        if self.invencible:
-            tiempo_actual = pygame.time.get_ticks()
-            if tiempo_actual - self.invencible_timer > self.invencible_duration:
-                self.invencible = False   
+            self.disparar()  
 
     def disparar(self):
-        
-        if self.sentido == 0:
-            pos = [self.rect.x + 64, self.rect.y+40]
-            vel = [10,0]
-        else:
-            pos = [self.rect.x, self.rect.y+40]
-            vel = [-10,0]
-        self.bullets.append(Bullet(pos, vel, self.contenedor)) 
+        if len(self.bullets) < 2:
+            if self.sentido == 0:
+                pos = [self.rect.x + 64, self.rect.y+40]
+                vel = [10,0]
+            else:
+                pos = [self.rect.x, self.rect.y+40]
+                vel = [-10,0]
+            self.bullets.append(Bullet(pos, vel, self.contenedor)) 
         

@@ -19,7 +19,7 @@ class Zombie(Sprite):
         self.cont = 0
         self.image = self.imagenes[self.cont]
         self.rect = self.image.get_rect()
-        self.rect.x = 800
+        self.rect.x = 900
         self.rect.y = 320
         self.vel = 3.5
         self.velocidad_animacion = 8
