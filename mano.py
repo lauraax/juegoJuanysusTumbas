@@ -10,6 +10,6 @@ class Mano(Sprite):
 
     def update(self):
         self.timer += 1
-        if self.timer >= 180:  #despues de 3 segundos la mano se quita
+        if self.timer >= 180:  #despues de 3 segundos el fantasmita se quita
             return True
         return False

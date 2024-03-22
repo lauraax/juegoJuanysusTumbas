@@ -66,13 +66,13 @@ def main_game_loop():
     tumbas = []
     zombies = pygame.sprite.Group()
     fantasmas = []
-
+    
     def pa_que_ponga_tumbas(screen):
-        tumbasfijas = [(100, 300), (400, 300), (700, 300)]  
+        tumbasfijas = [(100, 300), (400, 300), (700, 300)]#posiciones  
         tumba_image = pygame.image.load("imagenes/tumbaFija.png")  
         for grave in tumbasfijas:
             screen.blit(tumba_image, grave)  
-        if random.randint(0, 180) == 0: #pone las manos cada 3 seg pq son 60 fps
+        if random.randint(0, 180) == 0: #pone el fanstma cada 3 seg pq son 60 fps
             posMano = random.choice(tumbasfijas)  
             fantasmas.append(Mano(posMano))
     
