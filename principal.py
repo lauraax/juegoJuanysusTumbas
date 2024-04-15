@@ -65,17 +65,16 @@ def main_game_loop():
     juan = Juan(size)
     tumbas = []
     zombies = pygame.sprite.Group()
-    manos = pygame.sprite.Group()  
-
+    fantasmas = []
+    
     def pa_que_ponga_tumbas(screen):
-        tumbasfijas = [(100, 300), (400, 300), (700, 300)]  
+        tumbasfijas = [(100, 300), (400, 300), (700, 300)]#posiciones  
         tumba_image = pygame.image.load("imagenes/tumbaFija.png")  
         for grave in tumbasfijas:
             screen.blit(tumba_image, grave)  
-        if random.randint(0, 180) == 0: 
+        if random.randint(0, 180) == 0: #pone el fanstma cada 3 seg pq son 60 fps
             posMano = random.choice(tumbasfijas)  
-            mano = Mano(posMano)
-            manos.add(mano)
+            fantasmas.append(Mano(posMano))
     
     clock = pygame.time.Clock()
 
@@ -99,12 +98,16 @@ def main_game_loop():
             
             if random.randint(0, 100) % 25 == 0 and len(zombies) < 3 :
                 zombies.add(Zombie(size))
+                
             pa_que_ponga_tumbas(screen)
-            manos.update()
-            manos.draw(screen)
-            hits = pygame.sprite.spritecollide(juan, manos, True)
-            for hit in hits:
-                juan.vida -= 10
+            for fantasma in fantasmas:
+                if fantasma.update():
+                    fantasmas.remove(fantasma)
+                else:
+                    screen.blit(fantasma.image, fantasma.rect)
+                if juan.rect.colliderect(fantasma.rect):
+                    juan.vida -= 5
+                    fantasmas.remove(fantasma)
 
             for tumba in tumbas:
                 tumba.update() 
@@ -128,16 +131,14 @@ def main_game_loop():
             bullets_to_remove = []  
             for bullet in juan.bullets:
                 bullet.update()
-                if bullet.rect.left > width:
-                    bullets_to_remove.append(bullet)  
+                if bullet.rect.left > width or bullet.rect.right < 0:  
+                    bullets_to_remove.append(bullet) 
                 else:
                     screen.blit(bullet.image, bullet.rect)
-                
-
+                    
                 zombies_hit = pygame.sprite.spritecollide(bullet, zombies, True)  
                 if zombies_hit:
                     bullets_to_remove.append(bullet) 
-
 
             for bullet in bullets_to_remove:
                 juan.bullets.remove(bullet)
